@@ -9,13 +9,16 @@
 1. 提升效率——程序运行时相关
 2. 减少重复
 3. 减轻依赖
-
+---
 #### 语法
 - `cmak_mininum_required(VERSION X.XX)`：要求的cmake最小版本
 - `project(project_name)`：设置项目的名称
 - `add_subdirectory(xxxx)`: 添加子目录到build路径
 - `add_executable(name xxx xxxx)`: 利用后面的xxx源文件，构建name的可执行文件
 - `include_directories(path)`: 把依赖的头文件路径放进来，源文件就不需要添加额外路径
+- `find_package(lib REQUIRES)`: 自动查找外部库lib，并生成相关变量
+- `aux_source_directory(path Var)`：递归收集path目录下所有的`.cpp`文件，保存到`Var`变量
+- `enable_testing()`：启动CTest测试框架
 
 ##### 静态库
 - `add_library(static_name xxx)`: 把xxx源文件编译成库文件`sn.a`或者`sn.lib`
@@ -31,7 +34,7 @@
 - Windows平台（DLL加载顺序）：应用程序所在目录→系统目录→Windows目录→当前工作目录→PATH环境变量
 - Linux平台（SO加载顺序）：LD_PRELOAD环境变量指定的库→DT_RPATH等等
 - 记住两者不一样即可~
-
+---
 ### 四个阶段
 
 1. **预处理阶段**
@@ -88,7 +91,7 @@
     g++ main.cpp add.cpp -o main
     ```
     
-
+---
 ### Makefile
 
 - 以文件的形式，把指令集成在一起，便于管理和扩展等
@@ -117,7 +120,6 @@
     		g++ -E add.cpp -o add.i
     ```
     
-
 ### CMake
 
 - 大一统！Linux和Windows系统都支持
@@ -129,3 +131,13 @@
     cmake .. -DCMAKE_VERBOSE_MAKEFILE=ON
     cmake --build .
     ```
+---
+### Modern CMake
+- 模块化
+  
+| **指令** | **作用** | **常用参数（作用域）** |
+| --- | --- | --- |
+| **`add_library`** | 将源代码编译为静态库/动态库 | 无 |
+| **`target_include_directories`** | 指定头文件搜索路径，控制路径的可见性 | `PUBLIC`、`PRIVATE`、`INTERFACE` |
+| **`target_link_libraries`** | 声明库或可执行文件的依赖关系，自动传递链接和编译依赖 | `PUBLIC`、`PRIVATE`、`INTERFACE` |
+  
